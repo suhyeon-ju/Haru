@@ -1,0 +1,456 @@
+package com.pay.dao;
+import static common.JDBCTemplate.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import com.classinfo.dao.ClassInfoDao;
+import com.classinfo.dto.ClassInfoDto;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.member.dao.MemberDao;
+import com.member.dto.MemberDto;
+import com.pay.dto.PayDto;
+
+/**
+ * 결제 처리를 하기 위한 클래스 입니다. 오류 발생시 -1 리턴합니다.
+ * @author SJ
+ */
+public class PayDao_TEMP {
+	private long pay_uid = -1;
+	private String memberid = null;
+	private int classpk = -1;
+// ------------------------------------------------------------------------------------ 아래로 생성자
+	/**
+	 * 매개변수가 없는 생성자 입니다.
+	 */
+	public PayDao_TEMP() {}
+	/**
+	 * 생성자를 통해 필드의 classpk, memberid 를 초기화합니다.
+	 * @param classpk 결제할 클래스의 기본키 값
+	 * @param memberid 결제하는 멤버 기본키 값
+	 */
+	public PayDao_TEMP(int classpk, String memberid) {
+		this.classpk = classpk;
+		this.memberid = memberid;
+	}
+	/**
+	 * 생성자를 통해 필드의 classpk, memberid 를 초기화합니다.
+	 * @param memberid 결제하는 멤버 기본키 값
+	 * @param classpk 결제할 클래스의 기본키 값
+	 */
+	public PayDao_TEMP(String memberid,int classpk) {
+		this(classpk,memberid);
+	}
+	/**
+	 * 생성자를 통해 필드의 pay_uid 를 초기화합니다.
+	 * @param pay_uid 결제를 구분하는 기본키 값
+	 */
+	public PayDao_TEMP(long pay_uid) {
+		this.pay_uid = pay_uid;
+	}
+// ------------------------------------------------------------------------------------ 아래로 세터, 게터
+	/**
+	 * 매개변수 pay_uid 값으로 필드 전체를 초기화 합니다. pay_uid 로 기존 필드를 조회합니다.
+	 * @param pay_uid 결제를 구분하는 기본키 값
+	 * @return PayDao 자신을 리턴합니다.
+	 */
+	public PayDao_TEMP fSet(long pay_uid) {
+		this.pay_uid = pay_uid;
+		return fSet();
+	}
+	/**
+	 * pay_uid 값으로 필드 전체를 초기화 합니다. pay_uid 로 기존 필드를 조회합니다.
+	 * @return PayDao 자신을 리턴합니다.
+	 */
+	public PayDao_TEMP fSet() {
+		Connection con = getConnection();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		String sql = "SELECT ID,CLASSPK FROM tb_pay WHERE pay_uid=?";
+		try {
+			pstm = con.prepareStatement(sql);
+			pstm.setLong(1, pay_uid);
+			rs = pstm.executeQuery();
+			if(rs.next()) {
+				this.memberid = rs.getString("id");
+				this.classpk = rs.getInt("classpk");
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs,pstm,con);
+		}
+		return this;
+	}
+	/**
+	 * pay_uid 필드를 설정할 수 있습니다.
+	 * @param pay_uid 결제를 구분하는 기본키 값
+	 * @return PayDao 자신을 리턴합니다.
+	 */
+	public PayDao_TEMP setPay_uid(long pay_uid) {this.pay_uid = pay_uid; return this;}
+	/**
+	 * memberid 필드를 설정할 수 있습니다.
+	 * @param memberid 멤버의 기본키
+	 * @return PayDao 자신을 리턴합니다.
+	 */
+	public PayDao_TEMP setPay_memberid(String memberid) {this.memberid = memberid; return this;}
+	/**
+	 * classpk 필드를 설정할 수 있습니다.
+	 * @param classpk 클래스의 기본키
+	 * @return PayDao 자신을 리턴합니다.
+	 */
+	public PayDao_TEMP setPay_classpk(int classpk) {this.classpk = classpk; return this;}
+	/**
+	 * pay_uid 를 반환합니다.
+	 * @return pay_uid 를 반환합니다.
+	 */
+	public long getPay_uid() {return pay_uid;}
+// ------------------------------------------------------------------------------------
+	/**
+	 * 결제 회원, 클래스 기본키를 넘겨받아 새로운 결제 요청을 생성합니다.
+	 * @return PayDao를 다시 리턴합니다. 새로운 결제를 위해 필요합니다.
+	 */
+	public PayDao_TEMP newthis() {newPay();return this;}
+	/**
+	 * 결제 회원, 클래스 기본키를 넘겨받아 새로운 결제 요청을 생성합니다.
+	 * @return 결제를 구분하는 기본키 pay_uid를 리턴합니다.
+	 */
+	public long newPay() {return newPay(classpk,memberid);}
+	/**
+	 * 결제 회원, 클래스 기본키를 넘겨받아 새로운 결제 요청을 생성합니다.
+	 * @param id 결제하는 멤버의 기본키 값
+	 * @param classpk 결제할 클래스의 기본키 값
+	 * @return 결제를 구분하는 기본키 pay_uid 를 리턴합니다.
+	 */
+	public long newPay(String id,int classpk) {return newPay(classpk,id);}
+	/**
+	 * 결제 회원, 클래스 기본키를 넘겨받아 새로운 결제 요청을 생성합니다.
+	 * @param classpk 결제할 클래스의 기본키 값
+	 * @param id 결제하는 멤버의 기본키 값
+	 * @return 결제를 구분하는 기본키 pay_uid 를 리턴합니다.
+	 */
+	public long newPay(int classpk,String id) {
+		pay_uid = -1;
+		if(nullChk(id)) {return -1;}
+		this.memberid = id;
+		this.classpk = classpk;
+		long random_uid = randomkey();
+		while (check(random_uid)) { random_uid = randomkey(); }
+		ClassInfoDto dto = new ClassInfoDao().selectOne(classpk);
+		if(dto==null) { return -1; }
+		
+		Connection con = getConnection();
+		PreparedStatement pstm = null;
+		int res = 0;
+		String sql = "INSERT INTO tb_pay VALUES(?,?,?,?,DEFAULT,?,DEFAULT,null)";
+		try {
+			pstm = con.prepareStatement(sql);
+			pstm.setLong(1, random_uid);
+			pstm.setString(2, id);
+			pstm.setInt(3, classpk);
+			pstm.setString(4, "[결제]"+dto.getTitle());
+			pstm.setInt(5, dto.getPrice());
+			res = pstm.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstm,con);
+		}
+		if (res>0) {commit(con); pay_uid=random_uid;}
+		else {rollback(con);}
+		return pay_uid;
+	}
+	
+	
+	
+	
+// ------------------------------------------------------------------------------------ 아래로 기타 메소드
+	/**
+	 * 입력한 문자열이 null 또는 공백인지 확인하는 메소드입니다.
+	 * @param str 검사할 문자열
+	 * @return null 또는 공백이라면 true 리턴
+	 */
+	public boolean nullChk(String str) {
+		if (str==null) {return true;}
+		if (str.equals("")) {return true;}
+		return false;
+	}
+	/**
+	 * 입력한 문자열이 null 또는 공백일 경우 null 대신 공백을 아니라면 문자열을 출력하는 메소드입니다.
+	 * @param str 문자열
+	 * @return null 또는 공백이라면 공백 리턴 아니라면 입력된 문자열 리턴
+	 */
+	public String nullStr(String str) {
+		if (nullChk(str)) {return "";} else return str;
+	}
+	/**
+	 * 랜덤한 Long 타입 숫자 13자리를 생성하는 메소드입니다.
+	 * 결제 구분 기본키를 생성할 때 사용합니다.
+	 * @return 13자리의 Long 타입 숫자를 리턴합니다.
+	 */
+	public long randomkey() {
+		long random = (long) (Math.random()*9+1);
+		for (int i=0;i<12;i++) {random*=10; random+=(long)(Math.random()*10);}
+		return random;
+	}
+	/**
+	 * 매개변수로 넘긴 숫자가 이미 테이블에 존재하는지 확인합니다.
+	 * @param pay_uid 13자리의 Long 타입 숫자
+	 * @return 있을 경우 true 없을 경우 false를 리턴합니다.
+	 */
+	public boolean check(long pay_uid) {
+		boolean res = false;
+		Connection con = getConnection();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		String sql = "SELECT PAY_UID FROM tb_pay WHERE pay_uid=?";
+		try {
+			pstm = con.prepareStatement(sql);
+			pstm.setLong(1, pay_uid);
+			rs = pstm.executeQuery();
+			res = (rs.next()?true:false);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs,pstm,con);
+		}
+		return res;
+	}
+	
+	/**
+	 * 결제 정보에 맞춘 JavaScript를 리턴합니다.
+	 * @return JavaScript
+	 */
+	public String getJSCode() {
+		PayDto dto = new PayDao_TEMP(pay_uid).selectOne();
+		MemberDto mdto = new MemberDao().selectOne(memberid);
+		if (dto==null) return "";
+		if (mdto==null) return "";
+		StringBuffer buf = new StringBuffer();
+		buf.append("<script type=\"text/javascript\" src=\"https://code.jquery.com/jquery-1.12.4.min.js\"></script>\r\n");
+		buf.append("<script type=\"text/javascript\" src=\"https://cdn.iamport.kr/js/iamport.payment-1.1.5.js\"></script>");
+		buf.append("<script type=\"text/javascript\">");
+		buf.append("$(function(){ var IMP = window.IMP; IMP.init('imp54718779'); var msg; });\r\n");
+		buf.append(" function pay_func(method) {\r\n");
+		buf.append("  	 IMP.request_pay({\r\n");
+		buf.append("            pg : 'html5_inicis',\r\n");
+		buf.append("            pay_method : method,\r\n");
+		buf.append("            merchant_uid : 'merchant_"+dto.getPay_uid()+"',\r\n");
+		buf.append("            name : '"   + dto.getPay_name() +   "',\r\n");
+		buf.append("            amount : "  +dto.getPay_price()+    ",\r\n");
+		buf.append(" 			buyer_email : '',\r\n");
+		buf.append("            buyer_name : '"+mdto.getName()+"'\r\n");
+		buf.append("        }, function(rsp) {\r\n");
+		buf.append("            if ( rsp.success ) {\r\n");
+		buf.append("				alert(msg);\r\n");
+		buf.append("                ");
+		buf.append("            } else {\r\n");
+		buf.append("                msg = '결제에 실패하였습니다.';\r\n");
+		buf.append("                msg += '에러내용 : ' + rsp.error_msg;\r\n");
+		buf.append("            }\r\n");
+		buf.append("        });\r\n  }");
+		buf.append("</script>");
+		buf.append("");
+		return buf.toString();
+	}
+	/**
+	 * 테스트용 메소드로 결제 버튼을 출력합니다
+	 * @return 테스트용 결제 버튼
+	 */
+	public String testBtn() {
+		return "<br/><input type=\"button\" value=\"카드\" onclick=\"pay_func('card');\"/>\r\n" + 
+				"	<br/><input type=\"button\" value=\"실시간계좌이체\" onclick=\"pay_func('trans');\"/>\r\n" + 
+				"	<br/><input type=\"button\" value=\"가상계좌\" onclick=\"pay_func('vbank');\"/>\r\n" + 
+				"	<br/><input type=\"button\" value=\"휴대폰 소액결제\" onclick=\"pay_func('phone');\"/>";
+	}
+// ------------------------------------------------------------------------------------ 아래로 SELECT
+	/** 
+	 * PayDao 에서 만든 결제 정보를 DTO로 리턴합니다.
+	 * @return PayDto를 리턴
+	 */
+	public PayDto selectOne() {
+		return selectOne(pay_uid);
+	}
+	/**
+	 * 매개변수로 입력한 pay_uid 와 일치하는 정보를 DTO로 리턴합니다.
+	 * @param pay_uid 결제를 구분하는 기본키 값
+	 * @return PayDto를 리턴
+	 */
+	public PayDto selectOne(long pay_uid) {
+		Connection con = getConnection();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		PayDto dto  = null;
+		String sql = "SELECT * FROM tb_pay WHERE pay_uid=?";
+		try {
+			pstm = con.prepareStatement(sql);
+			pstm.setLong(1, pay_uid);
+			rs = pstm.executeQuery();
+			if (rs.next()) {
+				dto = new PayDto(
+					rs.getString("id"),
+					rs.getInt("classpk"),
+					rs.getLong("pay_uid"),
+					rs.getString("pay_name"),
+					rs.getString("pay_method"),
+					rs.getInt("pay_price"),
+					rs.getString("pay_true"),
+					rs.getDate("pay_time")
+				);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs,pstm,con);
+		}
+		return dto;
+	}
+// ------------------------------------------------------------------------------------ 
+	/**
+	 * toString 객체 정보를 Javascript 코드로 출력합니다.
+	 */
+	@Override
+	public String toString() {
+		return getJSCode();
+	}
+	
+
+	
+	/**
+	 * 결제 성공 여부
+	 * @return
+	 */
+	public boolean TestG() {return Test();}
+	public void cancel() {cancel_DELETE();}
+//------------------------------------------------------------------------------------
+	private void cancel_DELETE() {
+		String reurl="https://api.iamport.kr/payments/cancel"; //Request URL
+		String accessToken = getAccessToken(); if(accessToken==null) {return;}
+		String parammm = "merchant_4306301375725"; ///////// 일단 고정해서 테스트
+		String res = "";
+		String status;
+		try {
+			URL url = new URL(reurl);
+			HttpURLConnection conn;
+			conn = (HttpURLConnection) url.openConnection();
+//			conn.setRequestProperty("Content-Type", "application/json");
+			conn.setRequestProperty("Authorization"," Bearer "+accessToken);
+			conn.setRequestMethod("POST");
+			conn.setDoOutput(true);
+			StringBuilder sb = new StringBuilder();
+			sb.append("merchant_uid="+parammm);//+"&reason=cancelBtn");
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+			bw.write(sb.toString());
+			bw.flush();
+			int responseCode = conn.getResponseCode();
+			if (responseCode!=200) {System.out.println("ERROR NOT CODE 202");return;}
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line = "",result="";
+			while ((line = br.readLine()) != null) {
+				result += line;
+			}
+			bw.close();
+			br.close();
+			System.out.println(result);
+			JsonParser parser = new JsonParser();
+			JsonElement element = parser.parse(result);
+			
+			if (element.getAsJsonObject().get("code").getAsLong()!=0) {return;}
+			
+			JsonObject vresponse = element.getAsJsonObject().get("response").getAsJsonObject();
+			status = vresponse.get("status").getAsString();
+			System.out.println("상태 : "+vresponse.get("status").getAsString());
+			System.out.println(status);
+			// 결제상태 // ready : 미결제 , paid : 결제완료 , cancelled : 결제취소 , failed : 결제실패
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	private boolean Test() { //결제 조회하기 메소드     (만약 성공시 테이블 변경)
+		String status = "";
+		String param = "merchant_5161110648709"; //////////// 일단 고정되어 있음?
+		String reurl="https://api.iamport.kr/payments/find/"+param+"/?sorting=-updated";
+		String accessToken = getAccessToken(); if(accessToken==null) {return false;}
+		try {
+			URL url = new URL(reurl);
+			HttpURLConnection conn;
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestProperty("Content-Type", "application/json");
+			conn.setRequestProperty("Authorization"," Bearer "+accessToken);
+			conn.setRequestMethod("GET");
+//			conn.setDoOutput(true);
+			int responseCode = conn.getResponseCode();
+//			System.out.println(responseCode);
+			if (responseCode!=200) {return false;}
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line,result=line="";
+			while ((line = br.readLine()) != null) {
+				result+=line;
+			}
+			br.close();
+			System.out.println(result);
+			JsonParser parser = new JsonParser();
+			JsonElement element = parser.parse(result);
+			JsonObject vresponse = element.getAsJsonObject().get("response").getAsJsonObject();
+			status = vresponse.get("status").getAsString();
+			System.out.println("상태 : "+vresponse.get("status").getAsString());
+			System.out.println(status);
+			// 결제상태 // ready : 미결제 , paid : 결제완료 , cancelled : 결제취소 , failed : 결제실패
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return (status.equals("paid")?true:false);
+	}
+	private String getAccessToken() {
+		String key="5413393357627422";
+		String key_secret="6hb2u1sZuznQyId7uOlbgBoL69WVXEV4V76p8zpD8NuHvHPZwbbMMAyTKvOH9KL5SSu0rUEAH8idP7cl";
+		String reurl="https://api.iamport.kr/users/getToken";
+		String accessToken=null;
+		try {
+			URL url = new URL(reurl);
+			HttpURLConnection conn;
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setDoOutput(true);
+			StringBuilder sb = new StringBuilder();
+			sb.append("imp_key="+key+"&imp_secret="+key_secret);
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+			bw.write(sb.toString());
+			bw.flush();
+			int responseCode = conn.getResponseCode();
+			if (responseCode!=200) {return null;}
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line = "",result="";
+			while ((line = br.readLine()) != null) {
+				result+=line;
+			}
+			bw.close();
+			br.close();
+			
+			accessToken = result;
+			JsonParser parser = new JsonParser();
+			JsonElement element = parser.parse(result);
+			JsonObject vresponse = element.getAsJsonObject().get("response").getAsJsonObject();
+			accessToken = vresponse.get("access_token").getAsString();
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return accessToken;
+	}
+
+} 
+

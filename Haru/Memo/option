@@ -1,0 +1,25 @@
+JAVA DOC 생성 시 옵션
+-locale ko_KR -encoding UTF-8 -charset UTF-8 -docencoding UTF-8
+
+ClassInfoDao, ClassMemberDao, KakaOauth Dto & Biz
+PayBiz
+
+실제 upload 된 파일의 저장 경로 workspace 하위
+.metadata\.plugins\
+org.eclipse.wst.server.core\
+tmp0\wtpwebapps\web\upload
+
+/** tb_ 테이블의 데이터를 담기 위한 DTO */
+TABLE tb_class_review - ClassReviewDto
+TABLE tb_class_member - ClassMemberDto
+TABLE tb_pay - PayDto
+TABLE tb_class_image - ClassImgDto
+TABLE tb_classdate -ClassDateDto
+TABLE tb_classinfo -ClassInfoDto
+TABLE tb_board - BoardDto
+TABLE tb_member - MemberDto
+TABLE tb_sms - SmsDto
+
+COS.jar 을 이용한 파일 업로드
+https://jupiter0410.tistory.com/14
+https://blog.outsider.ne.kr/214

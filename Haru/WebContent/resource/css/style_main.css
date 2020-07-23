@@ -1,0 +1,355 @@
+.header_wrap{
+    height:120px;
+    background-color: sandybrown;
+}
+.carousel-inner{
+    height: 500px;
+}
+.item{
+    height:500px;
+    background-image: url(image/back02.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.category{
+	 cursor:pointer;
+}
+.category>div{
+    display: inline-block;
+    border:1.5px solid rgb(158, 157, 157);
+    border-radius: 50px;
+    width:70px;
+    height: 70px;
+    margin: 25px 25px 60px ;
+    text-align: center;
+    padding-top: 7px;
+    
+}
+.category>div>img{
+    width: 50px;
+    height: 50px;
+    /* margin: 20px 20px 20px 20px; */
+      
+}
+
+.category_wrap{
+    width: 100%;
+    text-align: center;
+}
+/* .c1:last-child{
+    margin-top: 5px;
+} */
+.c8{
+   position: relative;
+   top: -55px;
+}
+.content_wrap>.row{
+    width: 960px;
+}
+.class_title{
+    text-align: right;
+}
+.review_wrap{
+   
+    max-width: 1300px;
+    margin: 120px auto;
+    margin-bottom:0px;
+}
+.modal-content {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 0;
+    border-radius: 0.3rem;
+    outline: 0; }
+  .modal-dialog.modal-fullsize {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .modal-content.modal-fullsize {
+    height: auto;
+    min-height: 100%;
+    border-radius: 0;
+  }
+  h1{
+     font-size: 60px;
+      font-weight: 800;
+  }
+  h3 a{
+       color:black;
+      }
+    .jsx-2533767983 .jsx-2533767983 li{
+    display: inline-block;
+    margin: 0px 0px 0px 0px;
+    
+}
+#searchform{
+    width:100%;
+    padding-left : 360px 
+}
+.fixed_cate{
+    height: 240px;
+    width: 100%;
+    position:absolute;
+  
+}
+.main_count{
+    width: 100%;
+    margin: 0 auto;
+   
+}
+
+.main_count .cate_list ul li{
+    display: inline-block;
+    background: #fff;
+    /*width: 10.7%;*/
+    width:9.0%;
+    text-align: center;
+    padding: 22px 0;
+    font-size: 16px;
+    color: #555;
+    letter-spacing: -0.4px;
+    /*border-bottom: 1px solid #c9c9c9;*/
+    box-sizing: border-box;
+    cursor: pointer;
+}
+li{
+    list-style: none;
+    text-decoration: none;
+}
+
+
+.dropbtn2 {
+    color: #000000;
+    padding: 16px 25px;
+    font-size: 16px;
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.dropdown2 {
+  position: block;
+  display: inline-block;
+}
+
+.dropdown2-content {
+    height:252px;
+    border-top: 1px solid #c9c9c9;;
+  display: none;
+    position: relative;
+    left: 0px;
+  background-color: #ffffff;
+  z-index: 1;
+  padding-left:120px;
+}
+
+.dropdown2-content a {
+  color: black;
+  font-weight: 300;
+  padding: 30px 16px;
+  text-decoration: none;
+  display: inline-block;
+}
+.cate_wrap{
+    padding-left: 360px;
+}
+
+ .dropdown2:hover .dropdown2-content {
+        display: block;
+        position: absolute;
+        left: 0;
+        width: 100%;
+    }
+ 
+  .days ul,.days li{
+        list-style: none;
+        margin:0px;
+        padding: 0px;
+        display: inline-block;
+     
+  }
+  .days li{
+      padding: 10px;
+      border: 1px solid rgb(170, 168, 168);
+      margin-right: 15px;
+  }
+  .content_wrap .fixed_cate .dropdown2 .dropbtn2{
+      padding-left: 300px;
+  }
+  .img{
+    position: relative;
+    background-image: url('../images/back02.jpg');                                                               
+    /* height: 100vh; */
+    height:350px;
+    background-size: cover;
+}
+
+.img-cover{
+   position: absolute;
+   height: 350px;
+   width: 100%;
+   /* background-color: rgba(0, 0, 0, 0.7); */
+   z-index:1;
+}
+
+.img .img_content{
+     position: absolute;
+     top:50%;
+     left:50%;
+     transform: translate(-50%, -50%);                                                                   
+     font-size:5rem;
+     color: white;
+     z-index: 2;
+     text-align: center;
+}
+.board_table{
+    padding: 0px 250px;
+}
+.board_btn{
+    text-align: right; 
+    width:100%; 
+    display: block;  
+}
+.board_table_detail{
+  
+}
+.table_deta th{
+    height:30px;
+    width: 200px;
+    text-align: center;
+    background-color: #f1f1f1;
+    /*#f5f4f4*/
+}
+.hiide{
+	display:none;
+}
+.selectyi{
+	color:tomato;
+	font-size:25px;
+}
+ 
+ /* 이 아래 CSS는 기본 상태의 요일,시간,수업 선택*/
+div.days>ul#days>li,
+div.days>ul#times>li,
+div.days>ul#tTypes>li{
+	cursor:pointer;
+	background-color:white
+}
+/* 이 아래CSS는 마우스올렸거나 선택되었을때 CSS */
+/* 선택시 CSS 를 따로 주겠다면 js_chkbtn 분리*/
+div.days>ul#days>li:hover,
+div.days>ul#times>li:hover,
+div.days>ul#tTypes>li:hover,
+.js_chkbtn{
+	color:#fff;
+	background-color:#000 !important;
+	border:1px solid #000;
+	font-weight: bold;
+}
+.all_category.on {
+    display: block;
+    }
+ .all_category {
+    display: none;
+    overflow: auto;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 30000;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(17,17,17,0.95);}
+ .ti, .blind {
+    position: absolute !important;
+    clip: rect(0,0,0,0);
+    clip-path: polygon(0 0,0 0,0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    white-space: nowrap;}
+.dt {
+    display: table;
+    width: 100%;
+    height: 100%;
+   } 
+.dtc {
+    padding-bottom:60px;
+    display: table-cell;
+    vertical-align: middle;
+  }
+.container_allc {
+    width: 1040px;
+    margin: 0 auto;
+}
+.all_category .close_btn {
+    display: block;
+    margin: 20px auto;
+}
+button {
+    outline: none;
+    cursor: pointer;
+}
+button {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    vertical-align: top;
+}
+table {
+   /* width: 100%;*/
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.all_category table tr {
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    
+}
+.all_category table th {
+    width: 120px;
+    padding: 20px 0;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: left;
+    vertical-align: top;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+.all_category table td a {
+    display: inline-block;
+    margin-left: 20px;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #ccc;
+    letter-spacing: -0.35px;
+    text-decoration: none;
+}
+
+.all_category table td a:hover{
+    text-decoration: underline;
+}
+
+.all_category  table tr th a{
+    text-decoration: none;
+      font-weight:800;
+}
+.all_category table tr th td a{
+    color:#ccc;
+  
+}

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Assan 3</title>
+    
+    <!--차트 부트스트랩 CDN  -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Bootstrap-->
+    <link href="profile/dashboard/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Common Plugins CSS -->
+    <link href="profile/dashboard/css/plugins/plugins.css" rel="stylesheet">
+    <link href="profile/classic/css/plugins.css" rel="stylesheet">
+    <link href="profile/classic/css/style.css" rel="stylesheet">
+    <!--fonts-->
+    <link href="profile/dashboard/lib/line-icons/line-icons.css" rel="stylesheet">
+    <link href="profile/dashboard/lib/font-awesome/css/fontawesome-all.min.css" rel="stylesheet">
+    <link href="profile/dashboard/css/style.css" rel="stylesheet">
+    <!-- 간단프로필 css -->
+    <link href="profile/classic/css/realchartpage.css" type="text/css" rel="stylesheet">
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="profile/classic/js/plugins.js"></script>
+    <script src="profile/classic/js/assan.custom.js"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+    <!-- 제이쿼리 적용 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="profile/classic//css/style.css">
+    <link rel="stylesheet" href="profile/classic/css/footer.css">
+
+
+
+
+    <!-- 강의별 막대그래프 -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['bar'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Year', '강의1', '강의2', '강의3'],
+                ['2019', 100, 400, 200],
+                ['2020', 117, 460, 250],
+                ['2021', 260, 320, 340],
+            ]);
+
+            var options = {
+                chart: {
+                    title: '매출 현황',
+                    subtitle: '강의 별 매출 : 2019-2020',
+                }
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+    </script>
+
+    <!-- 강의별 매출 기여도 -->
+    <script type="text/javascript">
+        google.charts.load("current", { packages: ["corechart"] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['강의1', 11],
+                ['강의2', 2],
+                ['강의3', 2],
+                // ['Watch TV', 2],
+                // ['Sleep',    7]
+            ]);
+
+            var options = {
+                title: '강의별 총매출 기여도',
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            chart.draw(data, options);
+        }
+    </script>
+    <script type="text/javascript">
+        google.charts.load('current', { packages: ['corechart', 'line'] });
+        google.charts.setOnLoadCallback(drawBasic);
+
+        function drawBasic() {
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '월별');
+            data.addColumn('number', '매출');
+
+            data.addRows([
+                ['1월', 0], ['', 10], ['3월', 20], ['', 17], ['5월', 25], ['', 23],
+                ['7월', 22], ['', 35], ['9월', 40], ['', 50], ['11월', 70], ['', 80]
+            ]);
+
+            var options = {
+                title: '총매출 ',
+
+                hAxis: {
+                    title: '월'
+                },
+                vAxis: {
+                    title: 'Popularity'
+                }
+
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+            chart.draw(data, options);
+        }
+
+    </script>
+    <!-- 강의별 매출 기여도 끝!!! -->
+    <style type="text/css">
+        .container0 {
+            display: flex;
+            flex-wrap: nowrap;
+            text-align: center;
+            line-height: 50px;
+            font-size: 25px;
+        }
+
+        .container2 {
+            display: flex;
+
+        }
+        /* header */
+        .header_wrap{
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1100px;
+    min-width: 600px;
+}
+.header_left{
+    float: left;
+}
+.header_right{
+    float: right;
+}
+.dropdown {
+/*  position: block;*/
+  display: inline-block;
+    padding: 10px;
+    margin-right: 40px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 160px;
+/*  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.clearfix{
+    float: none;
+    clear: both;
+}
+
+.dropdown-content a:hover {background-color: #ffffff;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+        /* header end */
+.downbutton{
+    margin-right: 0px;
+}
+.studentlist-title{
+    display: flex;
+    float: left;
+}
+.studentlist-title-botton{
+    /* display: flex; */
+    display: inline-block;
+    float: right;
+
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="header_wrap">
+        <div class="header_left">
+            <img src="profile/image/haru.jpg" style="width: 300px;">
+        </div>
+        <div class="header_right">
+            <div class="dropdown">
+              <a>Haru 안내</a>
+            </div>
+            <div class="dropdown">
+              <a>강의</a>
+              <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+              </div>
+            </div>
+            <div class="dropdown">
+              <a>마에피이지</a>
+              <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+              </div>
+            </div>
+            <div class="dropdown">
+              <a>로그인</a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    
+
+
+    <div class="container mb40">
+        <hr>
+        <h4>프로필</h4>
+        <hr class="mb10">
+        <div class="row">
+            <div class="col-md-12 ">
+                <!-- <div class="fancy-title mb30">
+                </div> -->
+                <!--title-->
+                
+                    <!-- 요약 정보 -->
+                 <!-- 강사 간단 프로필 -->
+    <div class="profile-container">
+        <div class="row">
+              <div class="col-xs-12 col-sm-15">
+                <!-- Teacher profile -->
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                  <h4 class="panel-title">Teacher profile</h4>
+                  </div>
+                  <div class="panel-body">
+                    <div class="profile__avatar">
+                      <img src="profile/image/수지1.jpg" alt="...">
+                    </div>
+    
+                    <div class="profile__header">
+                      <h4>수지 <small>파티쉐</small></h4>
+                      <p class="text-muted">
+                       안녕하세요 ^^ 같이 맛있는 마카롱을 만들어 봅시다.
+                    
+                      </p>
+                      <p>
+                       <input type="button" value="프로필 수정">
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+                    <!-- 요약 정보 끝!! -->
+               
+
+            </div>
+        </div>
+        <hr>
+        <h4>통계 자료</h4>
+        <hr class="mb20">
+        <div class="row">
+            <div class="col-md-12 ">
+                <div class="fancy-title mb30">
+                </div>
+                <!--title-->
+                <div class="form-group row">
+                    <!-- 요약 정보 -->
+                    <div class="row mr-auto ml-auto">
+                        <div class="col-lg-3 mb-6 col-md-6 mb-30">
+                            <div class="list border1 rounded overflow-hidden">
+                                <div class="list-item">
+                                    <div
+                                        class="list-thumb bg-primary text-primary-light avatar rounded-circle avatar60 shadow-sm">
+                                        <i class="icon-Add-Basket"></i>
+                                    </div>
+                                    <div class="list-body text-right">
+                                        <span class="list-title fs-2x">5</span>
+                                        <span class="list-content fs14">개설 강좌 수</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--col-->
+                        <div class="col-lg-3 mb-6 col-md-6 mb-30">
+                            <div class="list border1 rounded overflow-hidden">
+                                <div class="list-item">
+                                    <div
+                                        class="list-thumb bg-warning-active text-warning-light avatar rounded-circle avatar60 shadow-sm">
+                                        <i class="icon-Truck"></i>
+                                    </div>
+                                    <div class="list-body text-right">
+                                        <span class="list-title fs-2x">25</span>
+                                        <span class="list-content  fs14">현재 수강생</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--col-->
+                        <div class="col-lg-3 mb-6 col-md-6 mb-30">
+                            <div class="list border1 rounded overflow-hidden">
+                                <div class="list-item">
+                                    <div
+                                        class="list-thumb bg-danger-active text-danger-light avatar rounded-circle avatar60 shadow-sm">
+                                        <i class="icon-Remove-Basket"></i>
+                                    </div>
+                                    <div class="list-body text-right">
+                                        <span class="list-title fs-2x">78%</span>
+                                        <span class="list-content  fs14">평균 수강률</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--col-->
+                        <div class="col-lg-3 mb-6 col-md-6  mb-30">
+                            <div class="list border1 rounded overflow-hidden">
+                                <div class="list-item">
+                                    <div
+                                        class="list-thumb bg-success-active text-success-light avatar rounded-circle avatar60 shadow-sm">
+                                        <i class="icon-Money-Bag"></i>
+                                    </div>
+                                    <div class="list-body text-right">
+                                        <span class="list-title fs-2x">700만원</span>
+                                        <span class="list-content fs14">총 매출</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--col-->
+                    </div>
+                    <!-- 요약 정보 끝!! -->
+                </div>
+
+            </div>
+        </div>
+        <!-- <hr class="mb50"> -->
+        <!-- <h4>막대 차트</h4>  -->
+
+        <hr>
+        <div class="row mb30">
+            <div class="col-md-12 mb10">
+                <div class="row">
+                    <div class="container2 ml-auto mr-auto">
+                        <div id="chart1">
+                            <div id="columnchart_material" class="chart" style="width: 0%; height: 300px; margin: 0;">
+                            </div>
+                        </div>
+                        <!-- <div id="chart2" > 
+                             <div id="piechart_3d" class="chart" style="width: 50%; height: 300px; margin: 0;"></div>
+                            </div>  -->
+
+
+                        <!-- 총매출 그래프!!! -->
+                        <div class="googlechart" style="display:table; width: 100%; height: 300px;">
+                            <div id="chart_div" style="display:table-cell; vertical-align: bottom;"></div>
+
+                        </div>
+                        <!-- 총매출 그래프 끝 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <h4>막대,원 차트</h4> 끝!!!!!!!!!!!!!!!!!!!!!! -->
+        <hr>
+        <h4>강의 리스트</h4>
+        <hr class="mb20">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row ">
+                    <div class=" ml-auto mr-auto " style="margin: 0 30px 0 15px; width:650px;">
+                        <table class="table table-bordered ">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">강의명</th>
+                                    <th scope="col">매출</th>
+                                    <th scope="col">신청인원</th>
+                                    <th scope="col">신청률</th>
+                                    <th scope="col">진행률</th>
+                                    <th scope="col">수업장소</th>
+                                    <th scope="col">수업시간</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>마카롱만들기</td>
+                                    <td>220,000</td>
+                                    <td>5</td>
+                                    <td>50%</td>
+                                    <td>20%</td>
+                                    <td>강남</td>
+                                    <td>2시~4시</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>크루아상 만들기</td>
+                                    <td>330,000</td>
+                                    <td>5</td>
+                                    <td>50%</td>
+                                    <td>20%</td>
+                                    <td>강남</td>
+                                    <td>5시~7시</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>케이크 만들기</td>
+                                    <td>220,000</td>
+                                    <td>5</td>
+                                    <td>50%</td>
+                                    <td>20%</td>
+                                    <td>강남</td>
+                                    <td>4시~6시</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h4>강의 정보</h4>
+        <hr class="mb20">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row ">
+                    <div class=" ml-auto mr-auto " style="margin: 0 30px 0 15px; width:650px;">
+                        <table class="table table-bordered ">
+                            <div class="studentlist-title">수강생 리스트</div>
+                            <div style="float: right;">
+                            <a href="#" class="btn btn-sm btn-gradient btn-gradient-secondary mb-2 downbutton studentlist-title-button" type="button" value="download">download</a>
+                            </div>
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">이름</th>
+                                    <th scope="col">연락처</th>
+                                    <th scope="col">성별</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>김건영</td>
+                                    <td>010-7777-7777</td>
+                                    <td>남자</td>
+                                    
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>정승주</td>
+                                    <td>010-3333-7777</td>
+                                    <td>남자</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>주수현</td>
+                                    <td>010-3333-3333</td>
+                                    <td>남자</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">4</th>
+                                    <td>박초롱</td>
+                                    <td>010-2222-3333</td>
+                                    <td>여자</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">5</th>
+                                    <td>이병호</td>
+                                    <td>010-9999-3333</td>
+                                    <td>남자</td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+
+                        <!-- 강의별 진행바 -->
+                        <div class="progress-bar-title">수업 진행 현황</div>
+                        <div class="progress_area">
+                            <div class="progress">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div>시작일/종료일/진행률</div>
+                        </div> 
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="mb50">
+    </div>
+
+    <footer id="fh5co-footer" class="fh5co-bg" role="contentinfo">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row row-pb-md">
+                <div class="col-md-4 fh5co-widget">
+                    <h3>당신과 나의 특별한 하루</h3>
+                    <p style="color: white;">“때때로 손에서 일을 놓고 휴식을 취해야 한다. 잠시 일에서 벗어나 거리를 두고 보면 자기 삶의 조화로운 균형이 어떻게 깨져 있는지 분명히 보인다.”</p>
+                </div>
+                <div class="col-md-8">
+                    <h3>조원</h3>
+                    <div class="col-md-4 col-sm-4 col-xs-6">
+                        <ul class="fh5co-footer-links">
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                        </ul>
+                    </div>   
+                </div>
+            </div>
+    
+            <div class="row copyright">
+                <div class="col-md-12 text-center">
+                    <p>
+                        <small class="block" style="color: white;">&copy; 2020 | All Rights Reserved.</small> 
+                        <small class="block" style="color: white;">Haru.com</small>
+                    </p>
+                </div>
+            </div>
+    
+        </div>
+    </footer>
+</body>
+
+</html>

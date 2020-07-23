@@ -1,0 +1,198 @@
+package com.pay.dao;
+
+import com.pay.dto.PayDto;
+
+public interface PayDaoInterface {/*
+	// Field    classpk  , memberid , pay_uid
+	// TestMode : 더미데이터로 판단될 경우에도 정상처리된것처럼 리턴
+	
+	// Getter, Setter
+	public int getClasspk();
+	public String getmemberId();
+	public long getPay_uid();
+	public PayDao setClasspk();
+	public PayDao setMemberId();
+	public PayDao setPay_uid(long pay_uid);
+	public PayDao autoset(long pay_uid);
+	
+	// INSERT
+	public PayDao newPay();
+	public PayDao newPay(int classpk,String memberid);
+	public PayDao newPay(String memberid,int classpk);
+	public PayDao newPay(long pay_uid);
+	public PayDao addTestData(PayDto dto);
+	public PayDao addTestData(int loop);
+	/*
+	 * id : String
+	 * classpk : int
+	 * pay_uid : long
+	 * pay_name : String
+	 * pay_method : String [card , trans, vbank, phone, none] DEF:none
+	 * pay_price : int
+	 * pay_true : String [Y, N] DEF:N
+	 * pay_time : DATE
+	 */
+	
+	// ALTER
+//	public int isSuccess();
+	
+	// DELETE
+//	public int cancelPay();
+	
+	// SELECT
+//	public PayDto selectOne(long pay_uid);
+	//UTILL
+//	public String nullchange(String Str,String Default);
+	/*
+	 * // Constructor
+	public PayDao() {};
+	public PayDao(int classpk,String memberid)
+	{
+		this(memberid, classpk);
+	}
+	
+	public PayDao(String memberid,int classpk)
+	{
+		this.memberid = memberid;
+		this.classpk = classpk;
+	};
+	
+	public PayDao(long pay_uid) {
+		this.pay_uid = pay_uid;
+	};
+	 */
+}
+/*
+package com.pay.dao;
+
+import java.util.List;
+
+import com.member.dao.MemberDao;
+import com.member.dto.MemberDto;
+import com.pay.dto.PayDto;
+
+
+public class PayDao {
+	// Field
+	private char Testmode='N'; //만약 Y로 설정 시 더미데이터(오류)도 정상인 것처럼 처리
+	
+	private int classpk = -1;
+	private String memberid = null;
+	private long pay_uid = -1;
+	
+	// Getter
+	public int getClasspk() {return classpk;}
+	public String getmemberid() {return memberid;}
+	public long getPay_uid() {return pay_uid;}
+	
+	
+	// Setter (생성자 이용을 권장, 테스트를 위한 Setter)
+	public PayDao setClasspk(int classpk) {this.classpk=classpk;return this;};
+	public PayDao setMemberId(String memberid) {this.memberid=memberid;return this;}
+	public PayDao setPay_uid(long pay_uid) {this.pay_uid=pay_uid;return this;};
+	public PayDao autoSet(long pay_uid) {return this;};
+	
+	
+	// Constructor
+	public PayDao() {};
+	public PayDao(int classpk,String memberid)
+	{
+		this(memberid, classpk);
+	}
+	
+	public PayDao(String memberid,int classpk)
+	{
+		this.memberid = memberid;
+		this.classpk = classpk;
+	};
+	
+	public PayDao(long pay_uid) {
+		this.pay_uid = pay_uid;
+	};
+	
+	
+	// INSERT
+	public PayDao newPay(int classpk, String memberid) {
+		return newPay(memberid,classpk);
+	}
+	public PayDao newPay(String memberid,int classpk) {
+		this.memberid = memberid;
+		this.classpk = classpk;
+		return newPay();
+	}
+	public PayDao newPay() {
+		return this;
+	}
+	public int insert(PayDto dto) {
+		int res = 0;
+		return res;
+	}
+	
+	// ALTER
+	public int isSuccess() {return 0;}
+	public int alter(PayDto dto) {return 0;}
+	
+	// DELETE
+	public int cancelpay() {return 0;}
+	public int delete(long pay_uid) {return 0;}
+	
+	// SELECT
+	public boolean check(long pay_uid) {return false;}
+	public PayDto selectOne() {return selectOne(pay_uid);}
+	public PayDto selectOne(long pay_uid) {return null;}
+	public List<PayDto> selectAll(String memberid,int classpk) {return null;}
+	public List<PayDto> selectAll(int classpk) {return null;}
+	public List<PayDto> selectAll(String memberid) {return null;}
+	
+	
+	
+	// UTILL
+	public String nStr(String  Str,String Default) {return null;}
+	public boolean nChk(String Str)
+	{
+		if (Str==null) {return true;}
+		if (Str.equals("")) {return true;}
+		return false;
+	}
+	
+	public String getJsCode() {
+		PayDto dto = new PayDao_TEMP(pay_uid).selectOne();
+		MemberDto mdto = new MemberDao().selectOne(memberid);
+		if (dto==null) return "";
+		if (mdto==null) return "";
+		StringBuffer buf = new StringBuffer();
+		buf.append("<script type=\"text/javascript\" src=\"https://code.jquery.com/jquery-1.12.4.min.js\"></script>\r\n");
+		buf.append("<script type=\"text/javascript\" src=\"https://cdn.iamport.kr/js/iamport.payment-1.1.5.js\"></script>");
+		buf.append("<script type=\"text/javascript\">");
+		buf.append("$(function(){ var IMP = window.IMP; IMP.init('imp54718779'); var msg; });\r\n");
+		buf.append(" function pay_func(method) {\r\n");
+		buf.append("  	 IMP.request_pay({\r\n");
+		buf.append("            pg : 'html5_inicis',\r\n");
+		buf.append("            pay_method : method,\r\n");
+		buf.append("            merchant_uid : 'merchant_"+dto.getPay_uid()+"',\r\n");
+		buf.append("            name : '"   + dto.getPay_name() +   "',\r\n");
+		buf.append("            amount : "  +dto.getPay_price()+    ",\r\n");
+		buf.append(" 			buyer_email : '',\r\n");
+		buf.append("            buyer_name : '"+mdto.getName()+"'\r\n");
+		buf.append("        }, function(rsp) {\r\n");
+		buf.append("            if ( rsp.success ) {\r\n");
+		buf.append("				alert(msg);\r\n");
+		buf.append("                ");
+		buf.append("            } else {\r\n");
+		buf.append("                msg = '결제에 실패하였습니다.';\r\n");
+		buf.append("                msg += '에러내용 : ' + rsp.error_msg;\r\n");
+		buf.append("            }\r\n");
+		buf.append("        });\r\n  }");
+		buf.append("</script>");
+		buf.append("");
+		return buf.toString();
+	}
+	
+	// TOSTRING
+	@Override
+	public String toString() {
+		return getJsCode();
+	}
+	
+}
+*/

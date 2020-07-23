@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>강의등록페이지</title>
+    <style type="text/css">
+        .imgs_wrap {
+            width: 600px;
+            margin-top: 50px;
+        }
+
+        .imgs_wrap img {
+            max-width: 200px;
+        }
+    </style>
+
+    <link href="css/plugins.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/footer.css">
+    <!-- Plugins profile form CSS -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+
+
+    <!-- 썸네일 이미지 업로드 프리뷰-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.0.min.js
+    " charset="euc-kr"></script>
+    <script type="text/javascript">
+        function LoadImg(value) {
+            if (value.files && value.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#LoadImg').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(value.files[0]);
+            }
+        }
+    </script>
+    <!-- 다중 이미지 업로드-->
+    <script type="text/javascript">
+        var sel_files = [];
+
+        $(document).ready(function () {
+            $("#input_imgs").on("change", handleImgsFilesSelect);
+        });
+
+        function handleImgsFilesSelect(e) {
+            var files = e.target.files;
+            var filesArr = Array.prototype.slice.call(files);
+
+            filesArr.forEach(function (f) {
+                if (!f.type.match("image.*")) {
+                    alert("확장자는 이미지 확장자만 가능합니다.");
+                    return;
+                }
+
+                sel_files.push(f);
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img_html = "<img src=\"" + e.target.result + "\" />";
+                    $(".imgs_wrap").append(img_html);
+                }
+                reader.readAsDataURL(f);
+            });
+        }
+    </script>
+
+</head>
+
+<body>
+    <style type="text/css">
+        /*
+            .dropbtn {
+          background-color: #4CAF50;
+          color: white;
+          padding: 16px;
+          font-size: 16px;
+          border: none;
+        }
+        */
+        .header_wrap {
+            margin: 0 auto;
+            width: 100%;
+            max-width: 1100px;
+            min-width: 600px;
+        }
+
+        .header_left {
+            float: left;
+        }
+
+        .header_right {
+            float: right;
+        }
+
+        .dropdown {
+            /*  position: block;*/
+            display: inline-block;
+            padding: 10px;
+            margin-right: 40px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 160px;
+            /*  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .clearfix {
+            float: none;
+            clear: both;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ffffff;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
+        .col-md-12{
+            margin-top: 100px;
+        }
+    </style>
+    </head>
+
+    <body>
+        <div class="header_wrap">
+            <div class="header_left">
+                <img src="image/logo.jpg" style="width: 300px;">
+            </div>
+            <div class="header_right">
+                <div class="dropdown">
+                    <a>Haru 안내</a>
+                </div>
+                <div class="dropdown">
+                    <a>강의</a>
+                    <div class="dropdown-content">
+                        <a href="#">Link 1</a>
+                        <a href="#">Link 2</a>
+                        <a href="#">Link 3</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a>마에피이지</a>
+                    <div class="dropdown-content">
+                        <a href="#">Link 1</a>
+                        <a href="#">Link 2</a>
+                        <a href="#">Link 3</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a>로그인</a>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            
+        </div>
+
+
+
+        <div class="container mb40">
+            <h4>썸네일 등록</h4>
+            <hr class="mb20">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <div class="fancy-title mb30">
+                    </div>
+                    <pre class="brush:html"><input type="file" id="imgAttach" name="imgAttach" onchange="LoadImg(this);">
+                <img id="LoadImg">
+                <div class="form-group row">
+                </div>
+            </div>
+        </div>
+     
+        <h4>배너 이미지 등록</h4>
+        <hr class="mb50">
+        <div>
+            <input type="file" id="input_imgs" multiple />
+        </div>
+     
+        <div>
+            <div class="imgs_wrap">
+            </div>
+        </div>
+        <hr class="mb50">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <label for="example-text-input" class="col-2 col-form-label">강의제목</label>
+                    <label for="example-text-input" class="col-2 col-form-label"><input class="form-control"
+                            type="text"></label>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <label for="example-text-input" class="col-2 col-form-label">가격</label>
+                    <label for="example-text-input" class="col-2 col-form-label"><input class="form-control"
+                            type="number"></label>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-12 ">
+                <div class="row">
+                    <label for="example-text-input" class="col-2 col-form-label">장소</label>
+                    <div class="col-10">
+                        <input class="form-control" type="text" value="" id="example-text-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-12 ">
+                <div class="row">
+                    <label for="example-text-input" class="col-2 col-form-label">연관 태그</label>
+                    <div class="col-10">
+                        <input class="form-control col-3" type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="mb50">
+        <h4>강의 내용 등록</h4>
+        <hr>
+        <div>
+            <!-- 2. TEXT 편집 툴을 사용할 textarea -->
+            <textarea name="content" id="editor"></textarea>
+            <script>
+                // 3. CKEditor5를 생성할 textarea 지정
+                ClassicEditor
+                    .create(document.querySelector('#editor'))
+                    .catch(error => {
+                        console.error(error);
+                    });
+            </script>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-md-12 ">
+                <div class="row">
+                    <a href="javascript:void(0)" class="btn btn-secondary mr-auto ml-auto">등록</a>
+                </div>
+
+            </div>
+        </div>
+
+    
+    </div>
+    
+
+
+
+</body>
+
+<footer id="fh5co-footer" class="fh5co-bg" role="contentinfo">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row row-pb-md">
+            <div class="col-md-4 fh5co-widget">
+                <h3>당신과 나의 특별한 하루</h3>
+                <p style="color: white;">“때때로 손에서 일을 놓고 휴식을 취해야 한다. 잠시 일에서 벗어나 거리를 두고 보면 자기 삶의 조화로운 균형이 어떻게 깨져 있는지 분명히 보인다.”</p>
+            </div>
+            <div class="col-md-8">
+                <h3>조원</h3>
+                <div class="col-md-4 col-sm-4 col-xs-6">
+                    <ul class="fh5co-footer-links">
+                        <li><a href="#">s</a></li>
+                        <li><a href="#">sss</a></li>
+                        <li><a href="#">sss</a></li>
+                        <li><a href="#">ssss</a></li>
+                        <li><a href="#">ssss</a></li>
+                    </ul>
+                </div>
+
+               
+
+                
+            </div>
+        </div>
+
+        <div class="row copyright">
+            <div class="col-md-12 text-center">
+                <p>
+                    <small class="block" style="color: white;">&copy; 2020 | All Rights Reserved.</small> 
+                    <small class="block" style="color: white;">Haru.com</small>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</footer>
+</html>

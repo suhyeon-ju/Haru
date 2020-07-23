@@ -1,0 +1,21 @@
+
+<HTML>
+ <HEAD>
+  <TITLE> CKEditor5 Sample </TITLE>
+  
+  <!-- 1. CDN -->
+  <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+ </HEAD>
+ <BODY>
+    <!-- 2. TEXT 편집 툴을 사용할 textarea -->
+    <textarea name="content" id="editor"></textarea>
+    <script>
+    // 3. CKEditor5를 생성할 textarea 지정
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+    </script>
+ </BODY>
+</HTML>
