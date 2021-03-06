@@ -23,11 +23,11 @@ public class JDBCTemplate {
 			e.printStackTrace();
 		}
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String id = "semi";
-		String pw = "semi22"; //비밀번호는 대소문자 구분 있음
+		String id = 
+		String pw = 
 		if(server) { //서버 변수값이 true면 서버 DB 접속
 			url="jdbc:oracle:thin:@sclass.iptime.org:1521:xe";
-			id=pw="semi0103pm04";
+			id=pw=
 		}
 		Connection con = null;
 		try {
